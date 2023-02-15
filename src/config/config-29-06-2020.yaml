@@ -5,3 +5,7 @@ MaxHisto: 50
 PixelFileName: "pixeldirection_v2withCommaRadians"
 ApplyTimeCorr: 1
 HH: 330
+limXmin: -50
+limXmax: 50
+limYmin: -200
+limYmax: 50

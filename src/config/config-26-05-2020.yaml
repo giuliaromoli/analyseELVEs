@@ -6,6 +6,6 @@ PixelFileName: "pixeldirection_v2withCommaRadians"
 ApplyTimeCorr: 1
 HH: 330
 limXmin: -50
-limXmax: 50
+limXmax: 100
 limYmin: -200
 limYmax: 200

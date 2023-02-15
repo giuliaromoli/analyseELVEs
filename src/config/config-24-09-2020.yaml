@@ -8,4 +8,4 @@ HH: 330
 limXmin: -200
 limXmax: 200
 limYmin: -200
-limYmax: 0
+limYmax: -50
