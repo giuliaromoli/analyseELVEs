@@ -1,0 +1,11 @@
+RootFileName: "CPU_RUN_MAIN__2020_03_02__18_35_48__950Cathode3FullPDMonlyself_"
+Version: "l1_v11r2"
+FrameStart: 1680
+MaxHisto: 10
+PixelFileName: "pixeldirection_v2withCommaRadians"
+ApplyTimeCorr: 1
+HH: 330
+limXmin: -100
+limXmax: 200
+limYmin: 0
+limYmax: 200
