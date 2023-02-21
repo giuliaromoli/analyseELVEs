@@ -100,7 +100,7 @@ def getPolarHisto(newPath, configFile, namePlot, data, bestCentreX, bestCentreY,
     plotHistoPolar = ROOT.TCanvas("plotHistoPolar")
     polarLim = end - start + 1
     histoPolar = ROOT.TH2F("dueddipolar", "Polar Histogram; time [#frame]; radius [km]", int(polarLim), start, end,
-                           configFile.BumBinsToPlot, configFile.BinStart, binEnd)
+                           configFile.NumBinsToPlot, configFile.BinStart, binEnd)
 
     (kmdistanceX, kmdistanceY) = getPixelsPositions(configFile.PixelFileName, configFile.HH)
 
