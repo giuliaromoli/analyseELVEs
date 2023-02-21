@@ -23,7 +23,7 @@ if __name__ == '__main__':
             listEvents.append(inputFile.split('.')[0].split('config-')[1])
     # print(listEvents)
     for ee in [0]:  # range(len(listEvents)):
-        eventLabel = "24-09-2020"  # listEvents[ee]
+        eventLabel = "03-03-2020n3"  # listEvents[ee]
         eventPath = r'/home/jule/Scrivania/Mini-Euso/analyseELVEs/results/' + eventLabel + '/'
 
         if not os.path.exists(eventPath):
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                                         totDeExcTime))
 
         #getPixelsPlots(eventPath + "/pixelsPlots", pixelsInfos, configFile)
-
+        #continue
         #fit circle:
         if not os.path.exists(eventPath + "/circleFrames/infoCenter.txt"):
             (bestXCircleCenter, bestYCircleCenter, errCentreX, errCentreY) = getCircleCenter(eventPath + "/circleFrames/", pixelsInfos, photonCounterDataWindow, configFile, startWindow)
@@ -102,10 +102,10 @@ if __name__ == '__main__':
                 bestYCircleCenter = float(lines[3].split(':')[1].split(' ')[1])
                 errXCentre = float(lines[2].split(':')[1].split(' ')[1])
                 errYCentre = float(lines[4].split(':')[1].split(' ')[1])
-
+        continue
         # get polar histogram:
         if not os.path.exists(eventPath + "/histoPolarWindow.png"):
-            (polarHistoWindow) = getPolarHisto(eventPath, configFile, "histoPolarWindow", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow - 59, endWindow - 59)
+            (polarHistoWindow) = getPolarHisto(eventPath, configFile, "histoPolarWindow", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow - 59, endWindow -59)
         if not os.path.exists(eventPath + "/histoPolarELVE.png"):
             (polarHistoFrame) = getPolarHisto(eventPath, configFile, "histoPolarELVE", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow, configFile.FrameEnd)
 

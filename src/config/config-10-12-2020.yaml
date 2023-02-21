@@ -9,3 +9,12 @@ limXmin: -50
 limXmax: 50
 limYmin: -200
 limYmax: -50
+FrameEnd: 2760
+Threshold: 2
+NominalCentreX: 150
+NominalCentreY: -70
+GoodFrameStart: 2677
+GoodFrameEnd: 2701
+NumBinsToPlot: 25
+BinStart: 90
+BinSize: 5

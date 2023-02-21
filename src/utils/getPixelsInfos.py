@@ -161,6 +161,9 @@ def getPixelStructure(dataRaw, threshold, getSignal):
         if maxEnergy < (threshold + np.sqrt(threshold)):
             break
 
+        if countZero == 0 and maxEnergy < 200:
+            break
+
         thresholdSinglePeak = threshold
         if countZero > 0:
             thresholdSinglePeak = 0
@@ -179,14 +182,15 @@ def getPixelStructure(dataRaw, threshold, getSignal):
         # print(range(intTime1,intTime2))
 
         if countZero == 0:
-            thresholdSinglePeak = np.average(data[intTime2:len(data)])
+            dataToAverage = [data[i] for i in range(0, intTime1) if data[i] > 0]
+            thresholdSinglePeak = np.average(dataToAverage)
             threshold = thresholdSinglePeak
 
         if len(data[intTime1:intTime2]) > 4:  # at least 5 points to fit
             (optParam, errParam) = gaussExpFit(np.array(range(intTime1, intTime2)), data[intTime1:intTime2], timeMax,
                                                maxEnergy, sigma1, lambda1, thresholdSinglePeak)
             # print(optParam)
-            if (optParam[2] > 0) and (optParam[3] > 0) and (optParam[3] < 1000):
+            if (optParam[2] > 0) and (optParam[3] > 0): #and (optParam[3] < 1000)
                 fitCurve = gaussExp(np.array(range(len(data))), optParam[0], optParam[1], optParam[2], optParam[3],
                                     thresholdSinglePeak)
                 fitCurvePos = [fitCurve[i] for i in range(len(fitCurve)) if fitCurve[i] >= 0.1]
@@ -336,7 +340,7 @@ def getPixelsInfos(newPath, configFile, data, frameStart):
                     else:
                         timeStartPeak = arrayPeaks[0][0] - (arrayPeaks[0][3] - arrayPeaks[0][4]) + frameStart
                     timeStart = timeStartPeak - frameStart
-                    while data[0, 0, timeStart, px, py] > thresholdSinglePeak:
+                    while timeStart > 0 and data[0, 0, timeStart, px, py] > thresholdSinglePeak:
                         timeStart = timeStart - 1
                     if timeStart + frameStart < timeStartPeak:  # goldPrev is changed
                         arrayPeaksList = []
@@ -379,7 +383,7 @@ def getPixelsInfos(newPath, configFile, data, frameStart):
                     else:
                         timeEndPeak = arrayPeaks[0][0] + arrayPeaks[0][4] + frameStart
                     timeEnd = timeEndPeak - frameStart
-                    while data[0, 0, timeEnd, px, py] > thresholdSinglePeak:
+                    while timeEnd < len(data) and data[0, 0, timeEnd, px, py] > thresholdSinglePeak:
                         timeEnd = timeEnd + 1
                     if timeEnd + frameStart > timeEndPeak:  # goldNext is changed
                         arrayPeaksList = []
@@ -529,7 +533,7 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # tot-de-excitation:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "totDe-Excitation", 26, 0, 30, filePixelInfo)
     # threshold:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "background", 23, 0, 15, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "background", 23, 0, 50, filePixelInfo)
     # sigma:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "sigma", 16, 0, 30, filePixelInfo)
     # tau:
@@ -537,7 +541,7 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # lambda:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "lambda", 24, 0, 1, filePixelInfo)
     # maxEnergy:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 100, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 2500, filePixelInfo)
 
     filePixelInfo.close()
 
