@@ -4,8 +4,22 @@ import csv
 import math
 
 
-def fillHisto(newpath, pixelFileName, HH, infoHisto, minHisto, maxHisto, markerPosX, markerPosY, color, title,
-              figureName):
+def getPixelsPositions(pixelFileName, HH):
+    kmdistanceX = np.zeros((48, 48))  # pixel centre
+    kmdistanceY = np.zeros((48, 48))
+    with open(r'/home/jule/Scrivania/Mini-Euso/analyseELVEs/src/utils/' + pixelFileName + '.txt') as PixelFile:
+        reader = csv.reader(PixelFile)
+        for row in reader:  # for each pixel
+            pixX = int(row[0])  # pixel X coordinate
+            pixY = int(row[1])  # pixel Y coordinate
+            th0 = float(row[2])  # Theta angle pixel centre
+            ph0 = float(row[3])  # Phi angle pixel center
+            kmdistanceX[pixX][pixY] = HH * math.tan(th0) * math.cos(ph0)
+            kmdistanceY[pixX][pixY] = HH * math.tan(th0) * math.sin(ph0)
+    return kmdistanceX, kmdistanceY
+
+
+def fillHisto(newPath, pixelFileName, HH, infoHisto, minHisto, maxHisto, markerPosX, markerPosY, color, title, figureName):
     kmdistanceX = np.zeros((48, 48))  # pixel centre
     kmdistanceY = np.zeros((48, 48))
     kmdistanceX1 = np.zeros((48, 48))  # RightTop (ETOS view)
@@ -76,8 +90,32 @@ def fillHisto(newpath, pixelFileName, HH, infoHisto, minHisto, maxHisto, markerP
         m.DrawMarker(markerPosX[k], markerPosY[k])
     canvas.Update()
     canvas.SetCanvasSize(800, 800)
-    canvas.SaveAs(newpath + figureName)
+    canvas.SaveAs(newPath + figureName)
     return histo, canvas
+
+
+def getPolarHisto(newPath, configFile, namePlot, data, bestCentreX, bestCentreY, start, end):
+
+    binEnd = configFile.NumBinsToPlot * configFile.BinSize + configFile.BinStart
+    plotHistoPolar = ROOT.TCanvas("plotHistoPolar")
+    polarLim = end - start + 1
+    histoPolar = ROOT.TH2F("dueddipolar", "Polar Histogram; time [#frame]; radius [km]", int(polarLim), start, end,
+                           configFile.BumBinsToPlot, configFile.BinStart, binEnd)
+
+    (kmdistanceX, kmdistanceY) = getPixelsPositions(configFile.PixelFileName, configFile.HH)
+
+    for time in range(start, end + 1):
+        for iix in range(48):
+            for iiy in range(48):
+                distanceElfePixel = np.sqrt(
+                    np.power(-kmdistanceX[iix][iiy] - bestCentreX, 2) + np.power(-kmdistanceY[iix][iiy] - bestCentreY,
+                                                                                 2))
+                histoPolar.Fill(time, distanceElfePixel, data[0][0][time - start][iix][iiy])
+    histoPolar.Draw("COLZ")
+    histoPolar.SetStats(0)
+    # histoPolar.GetZaxis().SetRangeUser(0,100)
+    plotHistoPolar.SaveAs(newPath + "/" + namePlot + ".png")
+    return histoPolar
 
 
 if __name__ == '__main__':

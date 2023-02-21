@@ -5,21 +5,7 @@ import math
 import numpy as np
 import os
 from src.utils.fillHisto import fillHisto
-
-
-def getPixelsPositions(pixelFileName, HH):
-    kmdistanceX = np.zeros((48, 48))  # pixel centre
-    kmdistanceY = np.zeros((48, 48))
-    with open(r'/home/jule/Scrivania/Mini-Euso/analyseELVEs/src/utils/' + pixelFileName + '.txt') as PixelFile:
-        reader = csv.reader(PixelFile)
-        for row in reader:  # for each pixel
-            pixX = int(row[0])  # pixel X coordinate
-            pixY = int(row[1])  # pixel Y coordinate
-            th0 = float(row[2])  # Theta angle pixel centre
-            ph0 = float(row[3])  # Phi angle pixel center
-            kmdistanceX[pixX][pixY] = HH * math.tan(th0) * math.cos(ph0)
-            kmdistanceY[pixX][pixY] = HH * math.tan(th0) * math.sin(ph0)
-    return kmdistanceX, kmdistanceY
+from src.utils.fillHisto import getPixelsPositions
 
 
 def getPixelsDeltaTime(eventPath, pixelFileName, applyTimeCorr, HH):
@@ -174,39 +160,44 @@ def getData(startWindow, endWindow, eventPath, configFile):
         photonCounterDataWindow[0, 0, time - startWindow, :, :] = photonCounterData3D[0, 0, time - startWindow, :, :]
         photonCounterDataWindow[photonCounterDataWindow < 0] = 0
     # apply moving average:
-    jump = 1
+    jump = 0
     totLen = len(photonCounterDataWindow[0, 0, :, :, :])
     photonCounterDataWindowAvg = np.zeros((1, 1, int(totLen), 48, 48), dtype=np.float32)
     for px in range(48):
         for py in range(48):
             for time in range(jump, totLen - (jump + 1)):
                 photonCounterDataWindowAvg[0, 0, time, px, py] = np.average(
-                    photonCounterDataWindow[0, 0, time - jump:time + jump + 1, px,py])  # ,weights=np.array([0.155,0.69,0.155])
+                    photonCounterDataWindow[0, 0, time - jump:time + jump + 1, px,
+                    py])  # ,weights=np.array([0.155,0.69,0.155])
 
     # plot pixels' signals:
     newPath = eventPath + "/pixelsProfiles"
     if not os.path.exists(newPath):
         os.makedirs(newPath)
     (kmdistanceX, kmdistanceY) = getPixelsPositions(configFile.PixelFileName, configFile.HH)
-    for px in [21]:#range(48):
-        for py in [14]:#range(48):
+    for px in range(48):
+        for py in range(48):
             pixelLabel = px + 48 * py
-            xCoord = -kmdistanceX[px][py]  # x-coord
-            yCoord = -kmdistanceY[px][py]  # y-coord
-            if ((xCoord >= configFile.limXmin and xCoord <= configFile.limXmax) and (yCoord >= configFile.limYmin and yCoord <= configFile.limYmax)):
-                plotPIXProfile = ROOT.TCanvas("plotPixProfile"+str(pixelLabel))
-                plotPIX = ROOT.TMultiGraph()
-                plotEnePixel = ROOT.TGraph()
-                for time in range(len(photonCounterDataWindowAvg[0, 0, :, px, py])):
-                    plotEnePixel.SetPoint(plotEnePixel.GetN(), time + startWindow,
-                                          photonCounterDataWindowAvg[0, 0, time, px, py])
-                plotEnePixel.SetMarkerStyle(20)
-                plotEnePixel.SetMarkerColor(1)
-                plotEnePixel.SetMarkerSize(0.5)
-                plotPIX.Add(plotEnePixel)
-                plotPIX.Draw("APL")
-                plotPIXProfile.SaveAs(newPath + "/" + str(pixelLabel) + ".png")
+            if not os.path.exists(newPath + "/" + str(pixelLabel) + ".png"):
+                xCoord = -kmdistanceX[px][py]  # x-coord
+                yCoord = -kmdistanceY[px][py]  # y-coord
+                maxEnergy = max(photonCounterDataWindowAvg[0, 0, :, px, py])
+                if ((configFile.limXmin <= xCoord <= configFile.limXmax) and (
+                        configFile.limYmin <= yCoord <= configFile.limYmax) and (maxEnergy > 0)):
+                    plotPIXProfile = ROOT.TCanvas("plotPixProfile" + str(pixelLabel))
+                    plotPIX = ROOT.TMultiGraph()
+                    plotEnePixel = ROOT.TGraph()
+                    for time in range(len(photonCounterDataWindowAvg[0, 0, :, px, py])):
+                        plotEnePixel.SetPoint(plotEnePixel.GetN(), time + startWindow,
+                                              photonCounterDataWindowAvg[0, 0, time, px, py])
+                    plotEnePixel.SetMarkerStyle(20)
+                    plotEnePixel.SetMarkerColor(1)
+                    plotEnePixel.SetMarkerSize(0.5)
+                    plotPIX.Add(plotEnePixel)
+                    plotPIX.Draw("APL")
+                    plotPIXProfile.SaveAs(newPath + "/" + str(pixelLabel) + ".png")
     return photonCounterDataWindow
+
 
 if __name__ == '__main__':
     pass
