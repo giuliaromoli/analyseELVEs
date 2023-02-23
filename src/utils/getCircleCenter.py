@@ -48,6 +48,7 @@ def getCircleCenter(newPath, pixelsInfos, data, configFile, frameStart):
         for t in range(len(candidates)):
             plotEnePixel = ROOT.TGraph()
             tt = candidates[t]
+            print("%d \t %d \n" % (time, pixelsInfos[tt][0]))
             px = pixelsInfos[tt][1]
             py = pixelsInfos[tt][2]
             for timeP in range(len(data[0, 0, :, px, py])):

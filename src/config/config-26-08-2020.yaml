@@ -6,9 +6,9 @@ PixelFileName: "pixeldirection_v2withCommaRadians"
 ApplyTimeCorr: 1
 HH: 330
 limXmin: -200
-limXmax: 90
+limXmax: 50
 limYmin: -200
-limYmax: 0
+limYmax: -90
 FrameEnd: 2300
 Threshold: 1
 NominalCentreX: -35
@@ -16,5 +16,5 @@ NominalCentreY: -297
 GoodFrameStart: 2270
 GoodFrameEnd: 2298
 NumBinsToPlot: 30
-BinStart: 170
+BinStart: 200
 BinSize: 5

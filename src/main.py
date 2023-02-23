@@ -11,6 +11,7 @@ from src.utils.getPixelsInfos import getPhiEnergy
 from src.utils.getPixelsInfos import getPixelsPlots
 from src.utils.getCircleCenter import getCircleCenter
 from src.utils.fillHisto import getPolarHisto
+from src.utils.getPixelsInfosII import getPixelsInfosII
 
 
 ROOT.gROOT.SetBatch(ROOT.kTRUE)  # do not open figures!
@@ -43,7 +44,7 @@ if __name__ == '__main__':
                 lines = f.readlines()
                 startWindow = int(lines[0].split(':')[1])
                 endWindow = int(lines[1].split(':')[1])
-        # print(startWindow,endWindow)
+        #print(startWindow,endWindow)
 
         # get data:
         photonCounterDataWindow = getData(startWindow, endWindow, eventPath, configFile)
@@ -90,8 +91,8 @@ if __name__ == '__main__':
                                         energyPeakFit, sigmaEnergyPeakFit, thresholdSinglePeak, lambdaFit, totDuration,
                                         totDeExcTime))
 
-        #getPixelsPlots(eventPath + "/pixelsPlots", pixelsInfos, configFile)
-        #continue
+        getPixelsPlots(eventPath + "/pixelsPlots", pixelsInfos, configFile)
+        continue
         #fit circle:
         if not os.path.exists(eventPath + "/circleFrames/infoCenter.txt"):
             (bestXCircleCenter, bestYCircleCenter, errCentreX, errCentreY) = getCircleCenter(eventPath + "/circleFrames/", pixelsInfos, photonCounterDataWindow, configFile, startWindow)
@@ -102,7 +103,7 @@ if __name__ == '__main__':
                 bestYCircleCenter = float(lines[3].split(':')[1].split(' ')[1])
                 errXCentre = float(lines[2].split(':')[1].split(' ')[1])
                 errYCentre = float(lines[4].split(':')[1].split(' ')[1])
-        continue
+        #continue
         # get polar histogram:
         if not os.path.exists(eventPath + "/histoPolarWindow.png"):
             (polarHistoWindow) = getPolarHisto(eventPath, configFile, "histoPolarWindow", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow - 59, endWindow -59)
@@ -112,3 +113,6 @@ if __name__ == '__main__':
         # update pixelsInfos:
         if not os.path.exists(eventPath + "/infoPixelPhi.txt"):
             getPhiEnergy(eventPath, pixelsInfos, bestXCircleCenter, bestYCircleCenter)
+
+        #search for second ring:
+        #pixelsInfosII = getPixelsInfosII(eventPath + "/pixelsII", configFile, photonCounterDataWindow, pixelsInfos, startWindow)

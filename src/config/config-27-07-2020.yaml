@@ -7,7 +7,7 @@ ApplyTimeCorr: 1
 HH: 330
 limXmin: -100
 limXmax: 200
-limYmin: 50
+limYmin: 80
 limYmax: 200
 FrameEnd: 1150
 Threshold: 30

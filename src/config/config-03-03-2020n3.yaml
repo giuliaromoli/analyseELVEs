@@ -16,5 +16,5 @@ NominalCentreY: 200
 GoodFrameStart: 4310
 GoodFrameEnd: 4340
 NumBinsToPlot: 20
-BinStart: 60
+BinStart: 100
 BinSize: 5

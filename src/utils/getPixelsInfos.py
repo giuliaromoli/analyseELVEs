@@ -132,7 +132,13 @@ def gaussExp(x, l, s, m, area, threshold):
 
 
 def getPixelStructure(dataRaw, threshold, getSignal):
+
     data = dataRaw.copy()
+
+    #for time in range(len(data)):
+        #if time < 308:
+            #data[time] = 0
+
     arrayPeaks = []
     optParamArray = []
     countZero = 0
@@ -158,7 +164,10 @@ def getPixelStructure(dataRaw, threshold, getSignal):
         timeMax = np.where(data == maxEnergy)[0][0]
         sigmaMaxEnergy = np.sqrt(data[timeMax])
 
-        if maxEnergy < (threshold + np.sqrt(threshold)):
+        if countZero == 0 and maxEnergy < (threshold + np.sqrt(threshold)):
+            break
+
+        if countZero > 0 and maxEnergy < 5:
             break
 
         if countZero == 0 and maxEnergy < 200:
@@ -190,7 +199,7 @@ def getPixelStructure(dataRaw, threshold, getSignal):
             (optParam, errParam) = gaussExpFit(np.array(range(intTime1, intTime2)), data[intTime1:intTime2], timeMax,
                                                maxEnergy, sigma1, lambda1, thresholdSinglePeak)
             # print(optParam)
-            if (optParam[2] > 0) and (optParam[3] > 0): #and (optParam[3] < 1000)
+            if (optParam[2] > 0) and (optParam[3] > 0) and (optParam[3] < 1000):
                 fitCurve = gaussExp(np.array(range(len(data))), optParam[0], optParam[1], optParam[2], optParam[3],
                                     thresholdSinglePeak)
                 fitCurvePos = [fitCurve[i] for i in range(len(fitCurve)) if fitCurve[i] >= 0.1]
@@ -511,6 +520,7 @@ def getPixelsInfos(newPath, configFile, data, frameStart):
                 plotPIX.GetXaxis().SetTitle("Time")
                 plotPIX.GetXaxis().SetRangeUser(frameStart, configFile.FrameEnd)
                 plotPIX.GetYaxis().SetTitle("Energy [ADC]")
+                #plotPIX.GetYaxis().SetRangeUser(0, 40)
                 if goodPlot == 1:
                     plotPIXProfile.SaveAs(newPath + "/" + str(pixelLabel) + ".png")
                 else:
@@ -533,7 +543,7 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # tot-de-excitation:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "totDe-Excitation", 26, 0, 30, filePixelInfo)
     # threshold:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "background", 23, 0, 50, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "background", 23, 0, 5, filePixelInfo)
     # sigma:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "sigma", 16, 0, 30, filePixelInfo)
     # tau:
@@ -541,7 +551,7 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # lambda:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "lambda", 24, 0, 1, filePixelInfo)
     # maxEnergy:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 2500, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 40, filePixelInfo)
 
     filePixelInfo.close()
 
@@ -553,7 +563,7 @@ def plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, propName, prop
         tt = candidates[t]
         pixX = pixelsInfos[tt][1]
         pixY = pixelsInfos[tt][2]
-        pointsToPlot[pixX][pixY] = pixelsInfos[tt][propLabel]  # tot-duration
+        pointsToPlot[pixX][pixY] = pixelsInfos[tt][propLabel]
         ave.append(pixelsInfos[tt][propLabel])
         # if (pixelsInfos[tt][26]>0):
         #     print(pixelsInfos[tt][0])
