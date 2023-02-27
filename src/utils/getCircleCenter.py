@@ -21,20 +21,19 @@ def getCircleCenter(newPath, pixelsInfos, data, configFile, frameStart):
     allCandidates = [i for i in range(len(pixelsInfos)) if pixelsInfos[i][5] == 1]
 
     # #if second peak:
-    # secondPeakCandidates=[]
+    # secondPeakCandidates = []
     # for t in range(len(allCandidates)):
-    #     tt=allCandidates[t]
-    #     timeMax=pixelsInfos[tt][6]
-    #     peaks=[x for x in range(len(pixelsInfos)) if (pixelsInfos[x][0]==pixelsInfos[tt][0])and(pixelsInfos[x][5]>1)]
-    #     if (len(peaks)>1):
-    #         diffs=[]
+    #     tt = allCandidates[t]
+    #     timeMax = pixelsInfos[tt][6]
+    #     peaks = [x for x in range(len(pixelsInfos)) if (pixelsInfos[x][0] == pixelsInfos[tt][0]) and (pixelsInfos[x][5] > 1) and (pixelsInfos[x][6]-timeMax > 0)]
+    #     if len(peaks) > 0:
+    #         diffs = []
     #         for p in range(len(peaks)):
     #             diffs.append(abs(timeMax-pixelsInfos[peaks[p]][6]))
     #         minDiffs=min(diffs)
-    #         secondP=[x for x in range(len(peaks)) if (diffs[x]==minDiffs) and (diffs[x]<20)]
-    #         if len(secondP)>0:
-    #             secondPeakCandidates.append(peaks[secondP[0]])
-    # allCandidates=secondPeakCandidates
+    #         secondP = [x for x in range(len(peaks)) if diffs[x] == minDiffs][0]
+    #         secondPeakCandidates.append(peaks[secondP])
+    # allCandidates = secondPeakCandidates
 
     # get array of centers:
     for time in range(frameStart, configFile.FrameEnd):
@@ -93,8 +92,8 @@ def getCircleCenter(newPath, pixelsInfos, data, configFile, frameStart):
                                       "/plotSingleFrame" + str(time) + ".png")
         histoH.Draw("COLZ")
         canvasH.Update()
-        if (errCentreX < 10 and errCentreY < 10 and abs(singleCentreX) < 1000 and abs(
-                singleCentreY) < 1000 and configFile.GoodFrameStart <= time <= configFile.GoodFrameEnd):
+        if (errCentreX < 10 and errCentreY < 10 and abs(singleCentreX) < 5000 and abs(
+                singleCentreY) < 5000 and configFile.GoodFrameStart <= time <= configFile.GoodFrameEnd):
             bestXCentres.append(singleCentreX)
             bestYCentres.append(singleCentreY)
             arrayBestTime.append(time)

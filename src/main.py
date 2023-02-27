@@ -24,7 +24,7 @@ if __name__ == '__main__':
             listEvents.append(inputFile.split('.')[0].split('config-')[1])
     # print(listEvents)
     for ee in [0]:  # range(len(listEvents)):
-        eventLabel = "03-03-2020n3"  # listEvents[ee]
+        eventLabel = "29-06-2020"  # listEvents[ee]
         eventPath = r'/home/jule/Scrivania/Mini-Euso/analyseELVEs/results/' + eventLabel + '/'
 
         if not os.path.exists(eventPath):
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
         # get data:
         photonCounterDataWindow = getData(startWindow, endWindow, eventPath, configFile)
-
+        #continue
         # fit pixels with GaussExp:
         if not os.path.exists(eventPath + "/pixels/infoPixels.txt"):
             pixelsInfos = getPixelsInfos(eventPath + "/pixels", configFile, photonCounterDataWindow, startWindow)
@@ -91,8 +91,8 @@ if __name__ == '__main__':
                                         energyPeakFit, sigmaEnergyPeakFit, thresholdSinglePeak, lambdaFit, totDuration,
                                         totDeExcTime))
 
-        getPixelsPlots(eventPath + "/pixelsPlots", pixelsInfos, configFile)
-        continue
+        #getPixelsPlots(eventPath + "/pixelsPlots", pixelsInfos, configFile)
+        #continue
         #fit circle:
         if not os.path.exists(eventPath + "/circleFrames/infoCenter.txt"):
             (bestXCircleCenter, bestYCircleCenter, errCentreX, errCentreY) = getCircleCenter(eventPath + "/circleFrames/", pixelsInfos, photonCounterDataWindow, configFile, startWindow)
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         #continue
         # get polar histogram:
         if not os.path.exists(eventPath + "/histoPolarWindow.png"):
-            (polarHistoWindow) = getPolarHisto(eventPath, configFile, "histoPolarWindow", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow - 59, endWindow -59)
+            (polarHistoWindow) = getPolarHisto(eventPath, configFile, "histoPolarWindow", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow, endWindow)
         if not os.path.exists(eventPath + "/histoPolarELVE.png"):
             (polarHistoFrame) = getPolarHisto(eventPath, configFile, "histoPolarELVE", photonCounterDataWindow, bestXCircleCenter, bestYCircleCenter, startWindow, configFile.FrameEnd)
 

@@ -170,7 +170,7 @@ def getPixelStructure(dataRaw, threshold, getSignal):
         if countZero > 0 and maxEnergy < 5:
             break
 
-        if countZero == 0 and maxEnergy < 200:
+        if countZero == 0 and maxEnergy < 30:
             break
 
         thresholdSinglePeak = threshold
@@ -520,7 +520,7 @@ def getPixelsInfos(newPath, configFile, data, frameStart):
                 plotPIX.GetXaxis().SetTitle("Time")
                 plotPIX.GetXaxis().SetRangeUser(frameStart, configFile.FrameEnd)
                 plotPIX.GetYaxis().SetTitle("Energy [ADC]")
-                #plotPIX.GetYaxis().SetRangeUser(0, 40)
+                plotPIX.GetXaxis().SetRangeUser(960, 1040)
                 if goodPlot == 1:
                     plotPIXProfile.SaveAs(newPath + "/" + str(pixelLabel) + ".png")
                 else:
@@ -538,12 +538,30 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # plots of main peak:
     candidates = [i for i in range(len(pixelsInfos)) if (pixelsInfos[i][5] == 1)]
 
+    # secondPeakCandidates = []
+    # for t in range(len(candidates)):
+    #     tt = candidates[t]
+    #     timeMax = pixelsInfos[tt][6]
+    #     peaks = [x for x in range(len(pixelsInfos)) if (pixelsInfos[x][0] == pixelsInfos[tt][0]) and (pixelsInfos[x][5] > 1) and (pixelsInfos[x][6]-timeMax > 0)]
+    #     if len(peaks) > 0:
+    #         diffs = []
+    #         for p in range(len(peaks)):
+    #             diffs.append(abs(timeMax-pixelsInfos[peaks[p]][6]))
+    #         minDiffs=min(diffs)
+    #         secondP = [x for x in range(len(peaks)) if diffs[x]== minDiffs][0]
+    #         secondPeakCandidates.append(peaks[secondP])
+    # candidates = secondPeakCandidates
+
     # tot-duration:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "totDuration", 25, 0, 50, filePixelInfo)
     # tot-de-excitation:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "totDe-Excitation", 26, 0, 30, filePixelInfo)
+    # duration:
+    #plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "duration", 9, 0, 50, filePixelInfo)
+    # de-excitation:
+    #plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "de-Excitation", 10, 0, 30, filePixelInfo)
     # threshold:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "background", 23, 0, 5, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "background", 23, 0, 15, filePixelInfo)
     # sigma:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "sigma", 16, 0, 30, filePixelInfo)
     # tau:
@@ -551,7 +569,45 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # lambda:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "lambda", 24, 0, 1, filePixelInfo)
     # maxEnergy:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 40, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 120, filePixelInfo)
+    # time distance:
+    # deltaT:
+    # pointsToPlot = np.zeros((48, 48), dtype=np.float32)
+    # ave = []
+    # for t in range(len(candidates)):
+    #     tt = candidates[t]
+    #     timeMax = pixelsInfos[tt][6]
+    #     peaks = [x for x in range(len(pixelsInfos)) if
+    #              (pixelsInfos[x][0] == pixelsInfos[tt][0]) and (pixelsInfos[x][5] > 1) and (pixelsInfos[x][6]-timeMax > 0)]
+    #     if len(peaks) > 0:
+    #         diffs = []
+    #         for p in range(len(peaks)):
+    #             diffs.append(abs(timeMax - pixelsInfos[peaks[p]][6]))
+    #         minDiffs = min(diffs)
+    #         pixX = pixelsInfos[tt][1]
+    #         pixY = pixelsInfos[tt][2]
+    #         pointsToPlot[pixX][pixY] = minDiffs  # delta T
+    #         ave.append(minDiffs)
+    # print("deltaT: %5.2f " % (np.average(ave)))
+    # print("error: %5.2f " % (np.std(ave)))
+    # canvasH = ROOT.TCanvas()
+    # histoH = ROOT.TH2Poly()
+    # (histoH, canvasH) = fillHisto(newPath, configFile.PixelFileName, configFile.HH, pointsToPlot, 0, 35, [], [], 1, "", "/deltaT.png")
+    # histoH.Draw("COLZ")
+    # canvasH.Update()
+    # canvasH.SaveAs(newPath + "/deltaT.png")
+    #
+    # canvasH = ROOT.TCanvas()
+    # histoDuration = ROOT.TH1F("TH", "", 35, 0, 35)
+    # for t in range(len(ave)):
+    #     histoDuration.Fill(ave[t], 1)
+    # histoDuration.SetStats(0)
+    # histoDuration.SetFillColor(38)
+    # histoDuration.SetFillStyle(3001)
+    # histoDuration.Draw()
+    # histoDuration.GetXaxis().SetTitle("time distance [GTU]")
+    # histoDuration.GetYaxis().SetTitle("counts")
+    # canvasH.SaveAs(newPath + "/histoDeltaT.png")
 
     filePixelInfo.close()
 
