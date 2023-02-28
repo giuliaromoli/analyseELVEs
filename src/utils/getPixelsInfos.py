@@ -167,10 +167,10 @@ def getPixelStructure(dataRaw, threshold, getSignal):
         if countZero == 0 and maxEnergy < (threshold + np.sqrt(threshold)):
             break
 
-        if countZero > 0 and maxEnergy < 5:
+        if countZero > 0 and maxEnergy < 3:
             break
 
-        if countZero == 0 and maxEnergy < 30:
+        if countZero == 0 and maxEnergy < 10:
             break
 
         thresholdSinglePeak = threshold
@@ -191,7 +191,7 @@ def getPixelStructure(dataRaw, threshold, getSignal):
         # print(range(intTime1,intTime2))
 
         if countZero == 0:
-            dataToAverage = [data[i] for i in range(0, intTime1) if data[i] > 0]
+            dataToAverage = [data[i] for i in range(0, 60) if data[i] > 0]
             thresholdSinglePeak = np.average(dataToAverage)
             threshold = thresholdSinglePeak
 
@@ -520,7 +520,7 @@ def getPixelsInfos(newPath, configFile, data, frameStart):
                 plotPIX.GetXaxis().SetTitle("Time")
                 plotPIX.GetXaxis().SetRangeUser(frameStart, configFile.FrameEnd)
                 plotPIX.GetYaxis().SetTitle("Energy [ADC]")
-                plotPIX.GetXaxis().SetRangeUser(960, 1040)
+                #plotPIX.GetXaxis().SetRangeUser(960, 1040)
                 if goodPlot == 1:
                     plotPIXProfile.SaveAs(newPath + "/" + str(pixelLabel) + ".png")
                 else:
@@ -569,7 +569,7 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
     # lambda:
     plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "lambda", 24, 0, 1, filePixelInfo)
     # maxEnergy:
-    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 120, filePixelInfo)
+    plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, "maxEnergy", 7, 0, 40, filePixelInfo)
     # time distance:
     # deltaT:
     # pointsToPlot = np.zeros((48, 48), dtype=np.float32)

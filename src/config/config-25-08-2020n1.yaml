@@ -8,4 +8,13 @@ HH: 330
 limXmin: -200
 limXmax: 200
 limYmin: -200
-limYmax: -50
+limYmax: -90
+FrameEnd: 1285
+Threshold: 2
+NominalCentreX: 5
+NominalCentreY: -370
+GoodFrameStart: 1235
+GoodFrameEnd: 1265
+NumBinsToPlot: 20
+BinStart: 240
+BinSize: 5
