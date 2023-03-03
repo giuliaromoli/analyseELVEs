@@ -1,0 +1,166 @@
+CircleCoords:
+  XCoord: 136
+  YCoord: 227
+
+Frames:
+  Start: 7360
+  End: 7410
+
+Radius:
+
+  XMin: 7360
+  XMax: 7420
+  YMin: 40
+  YMax: 240
+
+  RadiusSqrt:
+    Parameters:
+      Velocity:
+        Value: 0.7495
+        Min: 0
+        Max: 0.7495
+      InitTime:
+        Value: 7200
+        Min: 7100
+        Max: 7300
+      Altitude:
+        Value: 10
+        Min: 0.1
+        Max: 50
+    XMin: 7360
+    XMax: 7420
+    YMin: 50
+    YMax: 140
+
+  RadiusLinear:
+    Parameters:
+      Velocity:
+        Value: 0.7495
+        Min: 0
+        Max: 0.7495
+      InitTime:
+        Value: 7200
+        Min: 7100
+        Max: 7300
+    XMin: 7360
+    XMax: 7420
+    YMin: 50
+    YMax: 140
+
+EnergyTime:
+
+  Jump: 3
+  XMin: 7360
+  XMax: 7420
+  YMin: 0
+  YMax: 100
+
+  Energy2:
+    Parameters:
+      Velocity:
+        Value: 0.7495
+        Min: 0.7490
+        Max: 0.7495
+      InitTime:
+        Value: 7200
+        Min: 7100
+        Max: 7300
+      Altitude:
+        Value: 10
+        Min: 0.1
+        Max: 50
+      E1:
+        Value: 1
+        Min: -999
+        Max: 999
+    XMin: 7360
+    XMax: 7420
+    YMin: 0
+    YMax: 100
+
+  Energy32:
+    Parameters:
+      Velocity:
+        Value: 0.7495
+        Min: 0.7490
+        Max: 0.7495
+      InitTime:
+        Value: 7200
+        Min: 7100
+        Max: 7300
+      Altitude:
+        Value: 10
+        Min: 0.1
+        Max: 50
+      E1:
+        Value: 1
+        Min: -999
+        Max: 999
+    XMin: 7360
+    XMax: 7420
+    YMin: 0
+    YMax: 100
+
+  EnergyLinear:
+    Parameters:
+      Velocity:
+        Value: 0.7495
+        Min: 0.7490
+        Max: 0.7495
+      InitTime:
+        Value: 7200
+        Min: 7100
+        Max: 7300
+      Altitude:
+        Value: 10
+        Min: 0.1
+        Max: 50
+      E1:
+        Value: 1
+        Min: -999
+        Max: 999
+    XMin: 7360
+    XMax: 7420
+    YMin: 0
+    YMax: 100
+
+EnergyRadius:
+
+  Jump: 1
+  XMin: 100
+  XMax: 160
+  YMin: 0
+  YMax: 100
+
+  Energy2:
+    Parameters:
+      E1:
+        Value: 1
+        Min: -999
+        Max: 999
+    XMin: 0
+    XMax: 200
+    YMin: 0
+    YMax: 100
+
+  Energy32:
+    Parameters:
+      E1:
+        Value: 1
+        Min: -999
+        Max: 999
+    XMin: 0
+    XMax: 200
+    YMin: 0
+    YMax: 100
+
+  EnergyLinear:
+    Parameters:
+      E1:
+        Value: 1
+        Min: -999
+        Max: 999
+    XMin: 0
+    XMax: 200
+    YMin: 0
+    YMax: 100

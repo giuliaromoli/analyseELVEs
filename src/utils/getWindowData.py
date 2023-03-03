@@ -1,11 +1,35 @@
 import ROOT
 import csv
 import math
-
+from easydict import EasyDict as ed
 import numpy as np
 import os
 from src.utils.fillHisto import fillHisto
 from src.utils.fillHisto import getPixelsPositions
+import yaml
+
+
+def getEventInfos(eventLabel, eventPath):
+
+    # get config file:
+    with open(r'/home/jule/Scrivania/Mini-Euso/analyseELVEs/src/config/config-' + eventLabel + '.yaml') as file:
+        config = yaml.safe_load(file)
+    configFile = ed(config)
+
+    # get window limits:
+    if not os.path.exists(eventPath + "infoWindow/infoWindow.txt"):
+        (startWindow, endWindow) = getWindowLimits(eventPath, configFile)
+    else:
+        with open(eventPath + "infoWindow/infoWindow.txt") as f:
+            lines = f.readlines()
+            startWindow = int(lines[0].split(':')[1])
+            endWindow = int(lines[1].split(':')[1])
+    # print(startWindow,endWindow)
+
+    # get data:
+    photonCounterDataWindow = getData(startWindow, endWindow, eventPath, configFile)
+
+    return photonCounterDataWindow, configFile, startWindow, endWindow
 
 
 def getPixelsDeltaTime(eventPath, pixelFileName, applyTimeCorr, HH):

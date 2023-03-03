@@ -613,6 +613,22 @@ def getPixelsPlots(newPath, pixelsInfos, configFile):
 
 
 def plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, propName, propLabel, yMin, yMax, filePixelInfo):
+
+    plotPIXProfile = ROOT.TCanvas("timeProfile" + propName)
+    plotPIXP = ROOT.TMultiGraph()
+    plotEneProfile = ROOT.TGraph()
+    for t in range(len(candidates)):
+        tt = candidates[t]
+        plotEneProfile.SetPoint(plotEneProfile.GetN(),pixelsInfos[tt][6],pixelsInfos[tt][propLabel])
+    plotEneProfile.SetMarkerStyle(20)
+    plotEneProfile.SetMarkerColor(1)
+    plotEneProfile.SetMarkerSize(0.5)
+    plotPIXP.Add(plotEneProfile)
+    plotPIXP.Draw("AP")
+    plotPIXP.GetXaxis().SetTitle("Time")
+    plotPIXP.GetYaxis().SetTitle(propName)
+    plotPIXProfile.SaveAs(newPath + "/Profile" + propName + ".png")
+
     pointsToPlot = np.zeros((48, 48), dtype=np.float32)
     ave = []
     for t in range(len(candidates)):
@@ -647,38 +663,49 @@ def plotPixelsInfos(newPath, candidates, pixelsInfos, configFile, propName, prop
     canvasH.SaveAs(newPath + "/histo" + propName + ".png")
 
 
-def getPhiEnergy(newPath, pixelsInfos, ElveCentreX, ElveCentreY):
-    # this function returns phi angles for selected points:
-    # (time,posX,posY,energy)->(time,phi,energy)
-
-    pixelsInfosPhi = []
-    fileInfoPixelPhi = open(newPath + "/infoPixelPhi.txt", "w+")  # open debugFile
-
-    for t in range(len(pixelsInfos)):
-        xCoord = pixelsInfos[t][3] - ElveCentreX
-        yCoord = pixelsInfos[t][4] - ElveCentreY
-        distanceFromCenter = np.sqrt(np.power(xCoord, 2) + np.power(yCoord, 2))
-        thetaRad = np.arctan(yCoord / xCoord)
-        thetaDeg = thetaRad * 180 / math.pi
-        if xCoord < 0:
-            thetaDeg = thetaDeg + 180
-        pixelsInfosPhi.append((pixelsInfos[t][0], pixelsInfos[t][1], pixelsInfos[t][2], pixelsInfos[t][3],
-                               pixelsInfos[t][4], pixelsInfos[t][5], pixelsInfos[t][6], pixelsInfos[t][7],
-                               pixelsInfos[t][8], pixelsInfos[t][9], pixelsInfos[t][10], pixelsInfos[t][11],
-                               pixelsInfos[t][12], pixelsInfos[t][13], pixelsInfos[t][14], pixelsInfos[t][15],
-                               pixelsInfos[t][16], pixelsInfos[t][17], pixelsInfos[t][18], pixelsInfos[t][19],
-                               pixelsInfos[t][20], pixelsInfos[t][21], pixelsInfos[t][22], distanceFromCenter, thetaDeg,
-                               pixelsInfos[t][23], pixelsInfos[t][24], pixelsInfos[t][25], pixelsInfos[t][26]))
-        fileInfoPixelPhi.write(
-            "%d \t %d \t %d \t %5.2f \t %5.2f \t %d \t %d \t %5.2f \t %5.2f \t %d \t %d \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %d \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %5.2f \t %d \t %d \n" % (
-                pixelsInfos[t][0], pixelsInfos[t][1], pixelsInfos[t][2], pixelsInfos[t][3], pixelsInfos[t][4],
-                pixelsInfos[t][5], pixelsInfos[t][6], pixelsInfos[t][7], pixelsInfos[t][8], pixelsInfos[t][9],
-                pixelsInfos[t][10], pixelsInfos[t][11], pixelsInfos[t][12], pixelsInfos[t][13], pixelsInfos[t][14],
-                pixelsInfos[t][15], pixelsInfos[t][16], pixelsInfos[t][17], pixelsInfos[t][18], pixelsInfos[t][19],
-                pixelsInfos[t][20], pixelsInfos[t][21], pixelsInfos[t][22], distanceFromCenter, thetaDeg,
-                pixelsInfos[t][23], pixelsInfos[t][24], pixelsInfos[t][25], pixelsInfos[t][26]))
-    fileInfoPixelPhi.close()
-    return pixelsInfosPhi
+def readPixelsInfos(eventPath):
+    pixelsInfos = []
+    if not os.path.exists(eventPath + "pixels/infoPixels.txt"):
+        print("no pixelsInfos.txt file found!")
+        return pixelsInfos
+    else:
+        with open(eventPath + "pixels/infoPixels.txt") as f:
+            for line in f:
+                splittedLine = line.split('\t')
+                pixelLabel = int(splittedLine[0])
+                pixX = int(splittedLine[1])
+                pixY = int(splittedLine[2])
+                x = float(splittedLine[3])
+                y = float(splittedLine[4])
+                nPeak = int(splittedLine[5])
+                timeMax = int(splittedLine[6])
+                maxEnergy = float(splittedLine[7])
+                sigmaMaxEnergy = float(splittedLine[8])
+                fullWidth = int(splittedLine[9])
+                deExcTime = int(splittedLine[10])
+                totEnergy = float(splittedLine[11])
+                sigmaTotEnergy = float(splittedLine[12])
+                energyPeak = float(splittedLine[13])
+                sigmaEnergyPeak = float(splittedLine[14])
+                # from fit with gaussExp:
+                tauFit = float(splittedLine[15])
+                sigmaFit = float(splittedLine[16])
+                meanFit = int(splittedLine[17])
+                areaFit = float(splittedLine[18])
+                maxEnergyFit = float(splittedLine[19])
+                sigmaMaxEnergyFit = float(splittedLine[20])
+                energyPeakFit = float(splittedLine[21])
+                sigmaEnergyPeakFit = float(splittedLine[22])
+                thresholdSinglePeak = float(splittedLine[23])
+                lambdaFit = float(splittedLine[24])
+                totDuration = int(splittedLine[25])
+                totDeExcTime = int(splittedLine[26].split('\n')[0])
+                pixelsInfos.append((pixelLabel, pixX, pixY, x, y, nPeak, timeMax, maxEnergy, sigmaMaxEnergy,
+                                    fullWidth, deExcTime, totEnergy, sigmaTotEnergy, energyPeak, sigmaEnergyPeak,
+                                    tauFit, sigmaFit, meanFit, areaFit, maxEnergyFit, sigmaMaxEnergyFit,
+                                    energyPeakFit, sigmaEnergyPeakFit, thresholdSinglePeak, lambdaFit, totDuration,
+                                    totDeExcTime))
+    return pixelsInfos
 
 
 if __name__ == '__main__':
