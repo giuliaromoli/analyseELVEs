@@ -65,7 +65,7 @@ if __name__ == '__main__':
         pixelsInfosPhi = readPixelsInfosPhi(eventPath)
 
     # plot results:
-    plotResults(pixelsInfosPhi, configRFile, eventPath + "results/")
+    plotResults(pixelsInfosPhi, configRFile, eventPath + "resultsWithBackground/")
     # plot results (with background subtraction):
     pixelsInfosPhiSub = subtractBackground(pixelsInfosPhi)
     plotResults(pixelsInfosPhiSub, configRFile, eventPath + "resultsWithoutBackground/")

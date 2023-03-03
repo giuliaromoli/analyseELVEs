@@ -124,6 +124,12 @@ EnergyTime:
     YMin: 0
     YMax: 100
 
+  EnergyLog:
+    XMin: 7360
+    XMax: 7400
+    YMin: 0
+    YMax: 100
+
 EnergyRadius:
 
   Jump: 1
@@ -164,3 +170,20 @@ EnergyRadius:
     XMax: 200
     YMin: 0
     YMax: 100
+
+  EnergyLog:
+    XMin: 100
+    XMax: 140
+    YMin: 0
+    YMax: 100
+
+EnergyAngle:
+  Jump: 1
+  XMin: 200
+  XMax: 300
+  YMin: 0
+  YMax: 100
+  Angle1Min: 250
+  Angle1Max: 270
+  Angle2Min: 225
+  Angle2Max: 245

@@ -132,8 +132,8 @@ def plotResults(pixelsInfosPhi, configRFile, newPath):
     canvas = ROOT.TCanvas("radius")
     legend = ROOT.TLegend(0.1, 0.7, 0.45, 0.9)
     multiGraph = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.Radius.XMin, configRFile.Radius.XMax, 1, 23,
-                            "distance [km]", configRFile.Radius.YMin, configRFile.Radius.YMax, "both", "radius",
-                            "scatter", configRFile, fileInfoFit, legend)
+                            "distance [km]", configRFile.Radius.YMin, configRFile.Radius.YMax, 0, 360, "both", "radius",
+                            "scatter", configRFile, fileInfoFit, legend, 20, 1)
     legend.SetTextSize(0.04)
     legend.Draw()
     canvas.SaveAs(newPath + "radius.png")
@@ -141,65 +141,459 @@ def plotResults(pixelsInfosPhi, configRFile, newPath):
 
     ### ENERGY:
 
-    ## with background:
-
     # energy vs time:
     fileInfoFit.write("---MAX ENERGY VS TIME \n")
     canvas = ROOT.TCanvas("energyMax")
     legendT = ROOT.TLegend(0.65, 0.55, 0.9, 0.9)
     multiGraph = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin, configRFile.EnergyTime.XMax,
                             configRFile.EnergyTime.Jump, 7,
-                            "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, "both",
-                            "energyTime", "bar", configRFile, fileInfoFit, legendT)
+                            "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, 0, 360, "both",
+                            "energyTime", "bar", configRFile, fileInfoFit, legendT, 20, 1)
     legendT.SetTextSize(0.04)
     legendT.Draw()
     canvas.SaveAs(newPath + "energyMaxVsTime" + str(configRFile.EnergyTime.Jump) + ".png")
     fileInfoFit.write("\n")
+    # in log scale:
+    canvas = ROOT.TCanvas("energyMaxLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    legendTL = ROOT.TLegend(0.7, 0.8, 0.9, 0.9)
+    multiGraph = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                            configRFile.EnergyTime.XMax,
+                            configRFile.EnergyTime.Jump, 7,
+                            "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, 0, 360, "both",
+                            "energyTimeLog", "bar", configRFile, fileInfoFit, legendTL, 20, 1)
+    legendTL.SetTextSize(0.045)
+    legendTL.Draw()
+    canvas.SaveAs(newPath + "energyMaxVsTimeLog" + str(configRFile.EnergyTime.Jump) + ".png")
+    fileInfoFit.write("\n")
+
     fileInfoFit.write("---PEAK ENERGY VS TIME \n")
     canvas = ROOT.TCanvas("energyPeak")
     legendP = ROOT.TLegend(0.65, 0.55, 0.9, 0.9)
     multiGraph = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin, configRFile.EnergyTime.XMax,
                             configRFile.EnergyTime.Jump, 13,
-                            "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, "both",
-                            "energyTime", "bar", configRFile, fileInfoFit, legendP)
+                            "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, 0, 360, "both",
+                            "energyTime", "bar", configRFile, fileInfoFit, legendP, 20, 1)
     legendP.SetTextSize(0.04)
     legendP.Draw()
     canvas.SaveAs(newPath + "energyPeakVsTime" + str(configRFile.EnergyTime.Jump) + ".png")
     fileInfoFit.write("\n")
+    # in log scale:
+    canvas = ROOT.TCanvas("energyPeakLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    legendPL = ROOT.TLegend(0.7, 0.8, 0.9, 0.9)
+    multiGraph = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                            configRFile.EnergyTime.XMax,
+                            configRFile.EnergyTime.Jump, 13,
+                            "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, 0, 360, "both",
+                            "energyTimeLog", "bar", configRFile, fileInfoFit, legendPL, 20, 1)
+    legendPL.SetTextSize(0.045)
+    legendPL.Draw()
+    canvas.SaveAs(newPath + "energyPeakVsTimeLog" + str(configRFile.EnergyTime.Jump) + ".png")
+    fileInfoFit.write("\n")
 
     # energy vs distance:
     fileInfoFit.write("---MAX ENERGY VS DISTANCE \n")
-    canvas = ROOT.TCanvas("energyMax")
+    canvas = ROOT.TCanvas("energyRMax")
     legendR = ROOT.TLegend(0.75, 0.55, 0.9, 0.9)
     multiGraph = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
                             configRFile.EnergyRadius.XMax,
                             configRFile.EnergyRadius.Jump, 7,
-                            "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax, "both",
-                            "energyRadius", "bar", configRFile, fileInfoFit, legendR)
+                            "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax, 0, 360, "both",
+                            "energyRadius", "bar", configRFile, fileInfoFit, legendR, 20, 1)
     legendR.SetTextSize(0.04)
     legendR.Draw()
     canvas.SaveAs(newPath + "energyMaxVsRadius" + str(configRFile.EnergyRadius.Jump) + ".png")
     fileInfoFit.write("\n")
+    # in log scale:
+    canvas = ROOT.TCanvas("energyRMaxLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    legendRL = ROOT.TLegend(0.7, 0.8, 0.9, 0.9)
+    multiGraph = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                            configRFile.EnergyRadius.XMax,
+                            configRFile.EnergyRadius.Jump, 7,
+                            "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax, 0, 360, "both",
+                            "energyRadiusLog", "bar", configRFile, fileInfoFit, legendRL, 20, 1)
+    legendRL.SetTextSize(0.045)
+    legendRL.Draw()
+    canvas.SaveAs(newPath + "energyMaxVsRadiusLog" + str(configRFile.EnergyRadius.Jump) + ".png")
+    fileInfoFit.write("\n")
+
     fileInfoFit.write("---PEAK ENERGY VS DISTANCE \n")
-    canvas = ROOT.TCanvas("energyPeak")
+    canvas = ROOT.TCanvas("energyRPeak")
     legendPR = ROOT.TLegend(0.75, 0.55, 0.9, 0.9)
     multiGraph = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
                             configRFile.EnergyRadius.XMax,
                             configRFile.EnergyRadius.Jump, 13,
-                            "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax, "both",
-                            "energyRadius", "bar", configRFile, fileInfoFit, legendPR)
+                            "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax, 0, 360, "both",
+                            "energyRadius", "bar", configRFile, fileInfoFit, legendPR, 20, 1)
     legendPR.SetTextSize(0.04)
     legendPR.Draw()
     canvas.SaveAs(newPath + "energyPeakVsRadius" + str(configRFile.EnergyRadius.Jump) + ".png")
     fileInfoFit.write("\n")
+    # in log scale:
+    canvas = ROOT.TCanvas("energyPeakLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    legendPRL = ROOT.TLegend(0.7, 0.8, 0.9, 0.9)
+    multiGraph = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                            configRFile.EnergyRadius.XMax,
+                            configRFile.EnergyRadius.Jump, 13,
+                            "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax, 0, 360, "both",
+                            "energyRadiusLog", "bar", configRFile, fileInfoFit, legendPRL, 20, 1)
+    legendPRL.SetTextSize(0.045)
+    legendPRL.Draw()
+    canvas.SaveAs(newPath + "energyPeakVsRadiusLog" + str(configRFile.EnergyRadius.Jump) + ".png")
+    fileInfoFit.write("\n")
 
     # energy vs angle:
+    canvas = ROOT.TCanvas("energyMaxAngle")
+    multiGraph = plotResult(selPixelsInfosPhi, 24, "angle [deg]", configRFile.EnergyAngle.XMin,
+                            configRFile.EnergyAngle.XMax,
+                            configRFile.EnergyAngle.Jump, 7,
+                            "energy max [ADC]", configRFile.EnergyAngle.YMin, configRFile.EnergyAngle.YMax, 0, 360, "both",
+                            "none", "none", configRFile, fileInfoFit, legend, 20, 1)
+    canvas.SaveAs(newPath + "energyMaxVsAngle" + str(configRFile.EnergyAngle.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyMaxAngleVsTime")
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                            configRFile.EnergyTime.XMax,
+                            configRFile.EnergyTime.Jump, 7,
+                            "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax, configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                            "both",
+                            "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                            configRFile.EnergyTime.XMax,
+                            configRFile.EnergyTime.Jump, 7,
+                            "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                            configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                            "both",
+                            "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph, f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees", "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2, f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees", "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyMaxVsTimeSectors" + str(configRFile.EnergyTime.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyMaxAngleVsTimeLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                             configRFile.EnergyTime.XMax,
+                             configRFile.EnergyTime.Jump, 7,
+                             "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                             configRFile.EnergyTime.XMax,
+                             configRFile.EnergyTime.Jump, 7,
+                             "energy max [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyMaxVsTimeSectorsLog" + str(configRFile.EnergyTime.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyMaxAngleVsDistance")
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 7,
+                             "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 7,
+                             "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyMaxVsDistanceSectors" + str(configRFile.EnergyRadius.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyMaxAngleVsDistanceLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 7,
+                             "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 7,
+                             "energy max [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyMaxVsDistanceSectorsLog" + str(configRFile.EnergyRadius.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyPeakAngle")
+    multiGraph = plotResult(selPixelsInfosPhi, 24, "angle [deg]", configRFile.EnergyAngle.XMin,
+                            configRFile.EnergyAngle.XMax,
+                            configRFile.EnergyAngle.Jump, 13,
+                            "energy peak [ADC]", configRFile.EnergyAngle.YMin, configRFile.EnergyAngle.YMax, 0, 360, "both",
+                            "none", "none", configRFile, fileInfoFit, legend, 20, 1)
+    canvas.SaveAs(newPath + "energyPeakVsAngle" + str(configRFile.EnergyAngle.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyPeakAngleVsTime")
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                             configRFile.EnergyTime.XMax,
+                             configRFile.EnergyTime.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                             configRFile.EnergyTime.XMax,
+                             configRFile.EnergyTime.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyPeakVsTimeSectors" + str(configRFile.EnergyTime.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyPeakAngleVsTimeLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                             configRFile.EnergyTime.XMax,
+                             configRFile.EnergyTime.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 6, "time [GTU]", configRFile.EnergyTime.XMin,
+                             configRFile.EnergyTime.XMax,
+                             configRFile.EnergyTime.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyTime.YMin, configRFile.EnergyTime.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyPeakVsTimeSectorsLog" + str(configRFile.EnergyTime.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyPeakAngleVsDistance")
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyPeakVsDistanceSectors" + str(configRFile.EnergyRadius.Jump) + ".png")
+
+    canvas = ROOT.TCanvas("energyPeakAngleVsDistanceLog")
+    gPad = ROOT.TPad("pad1", "pad1", 0.1, 0.1, 0.9, 0.9, 0)
+    gPad.Draw()
+    gPad.cd()
+    gPad.SetLogy()
+    multiGraph = ROOT.TMultiGraph()
+    legendAT = ROOT.TLegend(0.3, 0.8, 0.9, 0.9)
+    multiGraph1 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle1Min, configRFile.EnergyAngle.Angle1Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 43, 2)
+    multiGraph2 = plotResult(selPixelsInfosPhi, 23, "distance [km]", configRFile.EnergyRadius.XMin,
+                             configRFile.EnergyRadius.XMax,
+                             configRFile.EnergyRadius.Jump, 13,
+                             "energy peak [ADC]", configRFile.EnergyRadius.YMin, configRFile.EnergyRadius.YMax,
+                             configRFile.EnergyAngle.Angle2Min, configRFile.EnergyAngle.Angle2Max,
+                             "both",
+                             "none", "none", configRFile, fileInfoFit, legendT, 33, 4)
+    multiGraph.Add(multiGraph1)
+    multiGraph.Add(multiGraph2)
+    multiGraph.Draw()
+    tGraph = ROOT.TGraph()
+    tGraph.SetMarkerStyle(20)
+    tGraph.SetMarkerSize(0.5)
+    tGraph.SetMarkerColor(2)
+    legendAT.AddEntry(tGraph,
+                      f"Sector between {configRFile.EnergyAngle.Angle1Min} and {configRFile.EnergyAngle.Angle1Max} degrees",
+                      "p")
+    tGraph2 = ROOT.TGraph()
+    tGraph2.SetMarkerStyle(20)
+    tGraph2.SetMarkerSize(0.5)
+    tGraph2.SetMarkerColor(4)
+    legendAT.AddEntry(tGraph2,
+                      f"Sector between {configRFile.EnergyAngle.Angle2Min} and {configRFile.EnergyAngle.Angle2Max} degrees",
+                      "p")
+    legendAT.SetTextSize(0.04)
+    legendAT.Draw()
+    canvas.SaveAs(newPath + "energyPeakVsDistanceSectorsLog" + str(configRFile.EnergyRadius.Jump) + ".png")
 
     fileInfoFit.close()
 
 
-def plotResult(data, xLabel, xName, xLimBot, xLimTop, jumpX, yLabel, yName, yLimBot, yLimTop, plotType, fitType,
-               fitPoints, configRFile, fileInfoFit, legend):
+def plotResult(data, xLabel, xName, xLimBot, xLimTop, jumpX, yLabel, yName, yLimBot, yLimTop, angleBot, angleTop, plotType, fitType,
+               fitPoints, configRFile, fileInfoFit, legend, colorMarkerScatter, colorMarkerBar):
 
     # sort data:
     dataSorted = np.zeros((len(data), len(data[0][:])))
@@ -213,14 +607,14 @@ def plotResult(data, xLabel, xName, xLimBot, xLimTop, jumpX, yLabel, yName, yLim
     xArrayScatter = []
     yArrayScatter = []
     for ll in range(len(data)):
-        if (xLimBot <= data[ll][xLabel] <= xLimTop) and (yLimBot <= data[ll][yLabel] <= yLimTop):
+        if (xLimBot <= data[ll][xLabel] <= xLimTop) and (yLimBot <= data[ll][yLabel] <= yLimTop) and (angleBot <= data[ll][24] <= angleTop):
             xArrayScatter.append(data[ll][xLabel])
             yArrayScatter.append(data[ll][yLabel])
     result = ROOT.TGraph()
     for i in range(len(xArrayScatter)):
         result.SetPoint(result.GetN(), xArrayScatter[i], yArrayScatter[i])
     result.SetMarkerStyle(20)
-    result.SetMarkerColor(20)
+    result.SetMarkerColor(colorMarkerScatter)
     result.SetMarkerSize(0.5)
     result.SetLineWidth(0)
 
@@ -232,7 +626,7 @@ def plotResult(data, xLabel, xName, xLimBot, xLimTop, jumpX, yLabel, yName, yLim
     for ii in range(startCount, xLimTop + 1, jumpX):
         candidates = [i for i in range(len(data)) if
                       (data[i][xLabel] > ii - jumpX) and (data[i][xLabel] < ii + jumpX) and (
-                                  yLimBot <= data[i][yLabel] <= yLimTop)]
+                                  yLimBot <= data[i][yLabel] <= yLimTop) and (angleBot <= data[i][24] <= angleTop)]
         if len(candidates) > 0:
             xArrayBar.append(ii)
             interval = np.array(candidates, dtype=int)
@@ -242,7 +636,7 @@ def plotResult(data, xLabel, xName, xLimBot, xLimTop, jumpX, yLabel, yName, yLim
     resultErr = ROOT.TGraphErrors(len(xArrayBar), array('f', xArrayBar), array('f', yArrayBar), array('f', zeros),
                                   array('f', yErrArray))
     resultErr.SetMarkerStyle(20)
-    resultErr.SetMarkerColor(1)
+    resultErr.SetMarkerColor(colorMarkerBar)
     resultErr.SetLineColor(1)
     resultErr.SetMarkerSize(0.5)
 
@@ -375,13 +769,31 @@ def plotResult(data, xLabel, xName, xLimBot, xLimTop, jumpX, yLabel, yName, yLim
         multiGraph.Add(fitLineEnergyR3, "AL")
         legend.AddEntry(fitLineEnergyR3, "E(t)=E_{1}r", "l")
 
+    if (fitType == "energyTimeLog") or (fitType == "energyRadiusLog"):
+        # fit log:
+        if fitType == "energyTimeLog":
+            fileInfoFit.write("Results energy time log: \n")
+            configP = configRFile.EnergyTime.EnergyLog
+        else:
+            fileInfoFit.write("Results energy distance log: \n")
+            configP = configRFile.EnergyRadius.EnergyLog
+        function = EnergyFunctionLog
+        functionPlot = plotEnergyFunctionLog
+        functionR = getRSquaredEnergyLog
+        initValues = [0, 0]
+        initBounds = ((-999, -999), (999, 999))
+        fitLineEnergyLog = fitResults(configP, function, functionR, functionPlot, initValues, initBounds, fileInfoFit,
+                                    fitPoints, xArrayScatter, yArrayScatter, xArrayBar, yArrayBar, 2)
+        multiGraph.Add(fitLineEnergyLog, "AL")
+        legend.AddEntry(fitLineEnergyLog, "E(x)=e^{ax+b}", "l")
+
     multiGraph.Draw()
 
     # save .png:
     multiGraph.GetXaxis().SetTitle(xName)
     multiGraph.GetYaxis().SetTitle(yName)
     multiGraph.GetXaxis().SetRangeUser(xLimBot - 10, xLimTop + 10)
-    multiGraph.GetYaxis().SetRangeUser(0, yLimTop)
+    multiGraph.GetYaxis().SetRangeUser(1, yLimTop)
 
     return multiGraph
 
@@ -438,6 +850,10 @@ def EnergyFunction(t, v, t0, h0, E1):
     return 1e06 * E1 * np.power((v * t1), -2)
 
 
+def EnergyFunctionLog(x, E1, E2):
+    return np.exp(E2) * np.exp(x * E1)
+
+
 def EnergyFunction2(t, v, t0, h0, E1):
     Hiono = 90
     tf = t0 - ((Hiono - h0) / v)
@@ -490,6 +906,12 @@ def plotEnergyFunction(t, popt):
     tf = t0 - ((Hiono - h0) / v)
     t1 = (t - tf)
     return 1e06 * E1 * np.power((v * t1), -2)
+
+
+def plotEnergyFunctionLog(x, popt):
+    E1 = popt[0]
+    E2 = popt[1]
+    return np.exp(E1*x) * np.exp(E2)
 
 
 def plotEnergyFunction2(t, popt):
@@ -562,6 +984,19 @@ def getRSquaredEnergy(arrayTime, arrayEnergy, popt):
     ss_tot = 0
     for l in range(len(arrayTime)):
         res = arrayEnergy[l] - EnergyFunction(arrayTime[l], popt[0], popt[1], popt[2], popt[3])
+        ss_res = ss_res + res ** 2
+        ss_tot = ss_tot + (arrayEnergy[l] - meanEnergy) ** 2
+    r_squared = 1 - (ss_res / ss_tot)
+    return r_squared
+
+
+def getRSquaredEnergyLog(arrayX, arrayEnergy, popt):
+    meanEnergy = np.average(arrayEnergy)
+    r_squared = 0
+    ss_res = 0
+    ss_tot = 0
+    for l in range(len(arrayX)):
+        res = arrayEnergy[l] - EnergyFunctionLog(arrayX[l], popt[0], popt[1])
         ss_res = ss_res + res ** 2
         ss_tot = ss_tot + (arrayEnergy[l] - meanEnergy) ** 2
     r_squared = 1 - (ss_res / ss_tot)
