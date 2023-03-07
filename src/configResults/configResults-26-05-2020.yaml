@@ -2,15 +2,15 @@ PixelFileName: "pixeldirection_v2withCommaRadians"
 HH: 330
 
 CircleCoords:
-  XCoord: 136
-  YCoord: 227
+  XCoord: -145
+  YCoord: 40
 
 Radius:
 
-  XMin: 7360
-  XMax: 7420
-  YMin: 40
-  YMax: 240
+  XMin: 4150
+  XMax: 4300
+  YMin: 100
+  YMax: 200
   Jump: 3
 
   RadiusSqrt:
@@ -20,17 +20,17 @@ Radius:
         Min: 0
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: 4150
+        Min: 4100
+        Max: 4200
       Altitude:
         Value: 10
         Min: 0.1
         Max: 50
-    XMin: 7360
-    XMax: 7420
-    YMin: 50
-    YMax: 140
+    XMin: 4150
+    XMax: 4300
+    YMin: 100
+    YMax: 200
 
   RadiusLinear:
     Parameters:
@@ -39,19 +39,19 @@ Radius:
         Min: 0
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
-    XMin: 7360
-    XMax: 7420
-    YMin: 50
-    YMax: 140
+        Value: 4150
+        Min: 4000
+        Max: 4200
+    XMin: 4200
+    XMax: 4300
+    YMin: 100
+    YMax: 200
 
 EnergyTime:
 
   Jump: 3
-  XMin: 7360
-  XMax: 7420
+  XMin: 4200
+  XMax: 4300
   YMin: 0
   YMax: 100
 
@@ -62,9 +62,9 @@ EnergyTime:
         Min: 0.7490
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: 4150
+        Min: 4100
+        Max: 4200
       Altitude:
         Value: 10
         Min: 0.1
@@ -73,10 +73,10 @@ EnergyTime:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 7360
-    XMax: 7420
+    XMin: 4000
+    XMax: 4400
     YMin: 0
-    YMax: 100
+    YMax: 250
 
   Energy32:
     Parameters:
@@ -85,9 +85,9 @@ EnergyTime:
         Min: 0.7490
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: 4150
+        Min: 4100
+        Max: 4200
       Altitude:
         Value: 10
         Min: 0.1
@@ -96,8 +96,8 @@ EnergyTime:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 7360
-    XMax: 7420
+    XMin: 4000
+    XMax: 4400
     YMin: 0
     YMax: 100
 
@@ -108,9 +108,9 @@ EnergyTime:
         Min: 0.7490
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: 4150
+        Min: 4100
+        Max: 4200
       Altitude:
         Value: 10
         Min: 0.1
@@ -119,16 +119,16 @@ EnergyTime:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 7360
-    XMax: 7420
+    XMin: 4000
+    XMax: 4400
     YMin: 0
-    YMax: 100
+    YMax: 250
 
   EnergyLog:
-    XMin: 7360
-    XMax: 7420
+    XMin: 4000
+    XMax: 4240
     YMin: 0
-    YMax: 100
+    YMax: 250
 
 EnergyRadius:
 
@@ -144,8 +144,8 @@ EnergyRadius:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 0
-    XMax: 200
+    XMin: 100
+    XMax: 160
     YMin: 0
     YMax: 100
 
@@ -155,8 +155,8 @@ EnergyRadius:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 0
-    XMax: 200
+    XMin: 100
+    XMax: 160
     YMin: 0
     YMax: 100
 
@@ -166,26 +166,26 @@ EnergyRadius:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 0
-    XMax: 200
+    XMin: 100
+    XMax: 160
     YMin: 0
     YMax: 100
 
   EnergyLog:
     XMin: 100
-    XMax: 140
+    XMax: 160
     YMin: 0
     YMax: 100
 
 EnergyAngle:
   Jump: 1
-  XMin: 200
-  XMax: 300
+  XMin: 0
+  XMax: 360
   YMin: 0
   YMax: 100
-  Angle1Min: 250
-  Angle1Max: 270
-  Angle2Min: 225
-  Angle2Max: 245
-  FrameToPlot: 7380
-  MaxHisto: 30
+  Angle1Min: 5
+  Angle1Max: 30
+  Angle2Min: -30
+  Angle2Max: -5
+  FrameToPlot: 4223
+  MaxHisto: 25

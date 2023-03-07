@@ -14,14 +14,14 @@ from easydict import EasyDict as ed
 import yaml
 from src.utils.plotELVEResults import getPhiEnergy
 from src.utils.plotELVEResults import readPixelsInfosPhi
-from src.utils.plotELVEResults import plotResults
-from src.utils.plotELVEResults import subtractBackground
+from src.utils.plotELVEResults import getResults
+
 
 ROOT.gROOT.SetBatch(ROOT.kTRUE)  # do not open figures!
 
 if __name__ == '__main__':
 
-    eventLabel = "30-12-2019"
+    eventLabel = "26-05-2020"
     print('start analysing ' + eventLabel)
 
     eventPath = r'/home/jule/Scrivania/Mini-Euso/analyseELVEs/results/' + eventLabel + '/'
@@ -65,7 +65,4 @@ if __name__ == '__main__':
         pixelsInfosPhi = readPixelsInfosPhi(eventPath)
 
     # plot results:
-    plotResults(pixelsInfosPhi, configRFile, eventPath + "resultsWithBackground/")
-    # plot results (with background subtraction):
-    pixelsInfosPhiSub = subtractBackground(pixelsInfosPhi)
-    plotResults(pixelsInfosPhiSub, configRFile, eventPath + "resultsWithoutBackground/")
+    getResults(pixelsInfosPhi, configRFile, eventPath + "/results/")

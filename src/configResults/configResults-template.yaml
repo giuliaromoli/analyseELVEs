@@ -2,16 +2,16 @@ PixelFileName: "pixeldirection_v2withCommaRadians"
 HH: 330
 
 CircleCoords:
-  XCoord: 136
-  YCoord: 227
+  XCoord: X circle center
+  YCoord: Y circle center
 
 Radius:
 
-  XMin: 7360
-  XMax: 7420
-  YMin: 40
-  YMax: 240
-  Jump: 3
+  XMin: minFrame
+  XMax: maxFrame
+  YMin: minDistance
+  YMax: maxDistance
+  Jump: 1
 
   RadiusSqrt:
     Parameters:
@@ -20,17 +20,17 @@ Radius:
         Min: 0
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: T0
+        Min: minT0
+        Max: maxT0
       Altitude:
         Value: 10
         Min: 0.1
         Max: 50
-    XMin: 7360
-    XMax: 7420
-    YMin: 50
-    YMax: 140
+    XMin: minFrame
+    XMax: maxFrame
+    YMin: minDistance
+    YMax: maxDistance
 
   RadiusLinear:
     Parameters:
@@ -39,21 +39,21 @@ Radius:
         Min: 0
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
-    XMin: 7360
-    XMax: 7420
-    YMin: 50
-    YMax: 140
+        Value: T0
+        Min: minT0
+        Max: maxT0
+    XMin: minFrame
+    XMax: maxFrame
+    YMin: minDistance
+    YMax: maxDistance
 
 EnergyTime:
 
-  Jump: 3
-  XMin: 7360
-  XMax: 7420
+  Jump: 1
+  XMin: minFrame
+  XMax: maxFrame
   YMin: 0
-  YMax: 100
+  YMax: maxEnergy
 
   Energy2:
     Parameters:
@@ -62,9 +62,9 @@ EnergyTime:
         Min: 0.7490
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: T0
+        Min: minT0
+        Max: maxT0
       Altitude:
         Value: 10
         Min: 0.1
@@ -73,10 +73,10 @@ EnergyTime:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 7360
-    XMax: 7420
+    XMin: minFrame
+    XMax: maxFrame
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
   Energy32:
     Parameters:
@@ -85,9 +85,9 @@ EnergyTime:
         Min: 0.7490
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: T0
+        Min: minT0
+        Max: maxT0
       Altitude:
         Value: 10
         Min: 0.1
@@ -96,10 +96,10 @@ EnergyTime:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 7360
-    XMax: 7420
+    XMin: minFrame
+    XMax: maxFrame
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
   EnergyLinear:
     Parameters:
@@ -108,9 +108,9 @@ EnergyTime:
         Min: 0.7490
         Max: 0.7495
       InitTime:
-        Value: 7200
-        Min: 7100
-        Max: 7300
+        Value: T0
+        Min: minT0
+        Max: maxT0
       Altitude:
         Value: 10
         Min: 0.1
@@ -119,24 +119,24 @@ EnergyTime:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 7360
-    XMax: 7420
+    XMin: minFrame
+    XMax: maxFrame
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
   EnergyLog:
-    XMin: 7360
-    XMax: 7420
+    XMin: minFrame
+    XMax: maxFrame
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
 EnergyRadius:
 
   Jump: 1
-  XMin: 100
-  XMax: 160
+  XMin: minDistance
+  XMax: maxDistance
   YMin: 0
-  YMax: 100
+  YMax: maxEnergy
 
   Energy2:
     Parameters:
@@ -144,10 +144,10 @@ EnergyRadius:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 0
-    XMax: 200
+    XMin: minDistance
+    XMax: maxDistance
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
   Energy32:
     Parameters:
@@ -155,10 +155,10 @@ EnergyRadius:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 0
-    XMax: 200
+    XMin: minDistance
+    XMax: maxDistance
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
   EnergyLinear:
     Parameters:
@@ -166,26 +166,26 @@ EnergyRadius:
         Value: 1
         Min: -999
         Max: 999
-    XMin: 0
-    XMax: 200
+    XMin: minDistance
+    XMax: maxDistance
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
   EnergyLog:
-    XMin: 100
-    XMax: 140
+    XMin: minDistance
+    XMax: maxDistance
     YMin: 0
-    YMax: 100
+    YMax: maxEnergy
 
 EnergyAngle:
   Jump: 1
-  XMin: 200
-  XMax: 300
+  XMin: 0
+  XMax: 360
   YMin: 0
-  YMax: 100
-  Angle1Min: 250
-  Angle1Max: 270
-  Angle2Min: 225
-  Angle2Max: 245
-  FrameToPlot: 7380
-  MaxHisto: 30
+  YMax: maxEnergy
+  Angle1Min: min angle 1
+  Angle1Max: max angle 1
+  Angle2Min: min angle 2
+  Angle2Max: max angle 2
+  FrameToPlot: frame to plot (for FrameAngles.png)
+  MaxHisto: max histogram value (for FrameAngles.png)
